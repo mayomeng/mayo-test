@@ -1,5 +1,6 @@
 package mayo.job.test.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import mayo.job.client.JobClient;
 import mayo.job.client.impl.JobClientFactory;
 import mayo.job.parent.param.JobParam;
@@ -17,6 +18,7 @@ import java.util.Map;
  * Created by SKJ-05A14-0049 on 2018/3/6.
  */
 @RestController
+@Slf4j
 public class MayoTestController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class MayoTestController {
 
     @RequestMapping(value = "/mayo/sync", method = RequestMethod.POST)
     public Object sync() throws Exception {
+        log.info("the sync start {}", new Date());
         JobClient jobClient = jobClientFactory.getJobClient();
         Map<String, Object> params = new HashMap();
         params.put("id", 1);
@@ -35,6 +38,8 @@ public class MayoTestController {
         jobParam.setParams(params);
         jobParam.setSubmitTime(new Date());
         JobParam jobResult = jobClient.syncRequest(jobParam);
+        log.info("the result {}.", jobResult);
+        log.info("the sync end {}", new Date());
         return jobResult;
     }
 
